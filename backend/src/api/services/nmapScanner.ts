@@ -7,7 +7,7 @@ export function runNmap(target: string | undefined): Promise<string> {
         }
         const command = 'nmap';
         // Add -vv for more verbosity if needed
-        const args = ['-T4', '-vv', '-sV', '-F',  target];
+        const args = ['-T4', '-v', '-sV', '-F',  target];
     
         const nmapProcess = spawn(command, args);
     
