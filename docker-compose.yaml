@@ -2,11 +2,13 @@ version: '3.8'
 services:
   backend:
     build: ./backend
+    network_mode: host
     ports:
       - "3000:3000"
     depends_on:
       - database
     environment:
+      USE_HOST_NETWORK: true
       NODE_ENV: development
     # Optionally add a volumes mapping for live code updates:
     volumes:
@@ -14,6 +16,7 @@ services:
 
   frontend:
     build: ./frontend/vue
+    network_mode: host
     ports:
       - "8080:5173"  # Maps host port 8080 to container port 5173
     depends_on:
@@ -24,6 +27,7 @@ services:
 
   database:
     image: mysql:8
+    network_mode: host
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}

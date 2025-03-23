@@ -12,8 +12,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mysql2": "^3.14.0",
+    "node-libnmap": "^0.2.15",
     "sequelize": "^6.37.6"
   },
   "devDependencies": {

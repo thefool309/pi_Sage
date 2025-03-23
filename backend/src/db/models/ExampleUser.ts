@@ -14,7 +14,7 @@ export interface IUser {
 export class User extends Model<IUser> implements IUser {
     public id!: number;       // The "!" tells TypeScript that this value will be set.
     public name!: string;
-    public email!: string;
+    public email!: string;    // a "?" tells TypeScript that the value could be set but doesnt require it
   }
 
 // Initialize the model and define its schema.
