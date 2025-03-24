@@ -7,11 +7,15 @@ console.log('Parsed .env variables:', result.parsed);
 
 import express, { Request, Response } from 'express';
 import { connectDB, sequelize } from './db/database';
+import cors from 'cors';
 import { User } from './db/models/ExampleUser'; //import models
 
 import nMapRouter from './api/routes/scanRoute';
 
 const app = express();
+
+app.use(cors());
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;

@@ -22,7 +22,7 @@ services:
     depends_on:
       - backend
     volumes:
-      - ./frontend/vue:/app
+      - ./frontend:/app
     command: ["npm", "run", "dev"]
 
   database:

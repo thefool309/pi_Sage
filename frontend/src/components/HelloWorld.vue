@@ -8,9 +8,12 @@ defineProps<{
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3>
-      You’ve successfully created a project with
+      Welcome to pi_Sage! This docker container is built with 
       <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>. What's next?
+      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a> +
+      <a href="https://nodejs.org/en" target="_blank" rel="noopener">node.js</a> +
+      <a href="https://nmap.org/book/man.html" target="_blank" rel="noopener">Nmap</a> +
+      <a href="https://www.mysql.com/" target="_blank" rel="noopener">MySql</a>
     </h3>
   </div>
 </template>

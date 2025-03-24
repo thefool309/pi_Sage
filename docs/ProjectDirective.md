@@ -98,7 +98,7 @@ I still need to verify that the backend and database are working properly,  but 
 
 below you can see that all three containers are up and running on my systems terminal
 
-![image with alt text](./dockercontainers.png)
+![image with alt text](./img/dockercontainers.png)
 
 
 the feedback from the logs for all three containers that indicated they are working properly
@@ -233,32 +233,8 @@ app.get("/status", (request: Request, response: Response) => {
 
 At this point the backend was setup to use typescript, and we had an active and running HTTP server
 
-![server is active and running response on terminal](./server_is_active_and_running.png)
-
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
+![server is active and running response on terminal](./img/server_is_active_and_running.png)
+  
 
 ### 3. Setting up the router and nmapProcess
 
@@ -310,45 +286,18 @@ app.use('/scan', nMapRouter);   // here we map the nMapRouter to /scan in the ro
 in another file we created a function that used spawn from child_process to handle running nmap and passing the data back to the request.[[5]](#5-nodejs-v23100-documentation-child-process--nodejs-v23100-documentation-nd-httpsnodejsorgapichild_processhtmlchild_processspawncommand-args-options)
 
 
+### 4. Connecting the backend to the frontend and displaying scan results
+At this point I installed a few libraries on the frontend. The first one I installed was 'axios' to handle making requests to the backend. Due to the containerization of this application no matter where it's deployed the backend is available via 'localhost:3000.' The first major issue I ran into was the DOM not reloading on it's own, so I had to add an interval on the frontend, so that it would continue to make that request until it was resolved. This involved modifying the backend code slightly and adding a "cache" system, as well as checks to ensure we aren't running multiple scans at once. Then the frontend started throwing an error about "cors" so I installed "cors" on the frontend and everything started behaving as expected. 
 
-```ts
-import { spawn } from 'child_process';
 
-export function runNmap(target: string | undefined): Promise<string> {
-    return new Promise((resolve, reject) => {
-        if(target == undefined){
-            return reject(`Target is undefined`);     //error checking in case target is undefined
-        }
-        const command = 'nmap';
-        // Add -vv for more verbosity if needed
-        const args = ['-T4', '-v', '-sV', '-F',  target];
-    
-        const nmapProcess = spawn(command, args);
-    
-        let output = '';
-        nmapProcess.stdout.on('data', (data) => {       //successfull output
-          output += data.toString();
-          console.log(data.toString());
-        });
-    
-        nmapProcess.stderr.on('data', (data) => {       //stderr won't halt the process but will print an error to the console for debugging
-          console.error(`Nmap stderr: ${data}`);
-        });
-    
-        nmapProcess.on('error', (error) => {            // on an error we send a rejection carrying the error message. 
-          reject(`Error: ${error.message}`);
-        });
-    
-        nmapProcess.on('close', (code) => {             //if nmap exited with an error code reject with that code. 
-          if (code !== 0) {
-            return reject(`Nmap process exited with code ${code}`);
-          }
-          resolve(output);
-        });
-    });
-}
-```
+at this point we had a front end that was displaying the nmap output, so I added some styles to make it look a little better and match the pre established vue template. I confirmed the frontend and backend were communicating with each other properly, and I have the beginning of my dashboard. 
 
+![The first portion of the vue dashboard](./img/frontend_1.png)
+
+
+## Summary
+
+Overall, these technologies form a viable combination and provide a solid foundation for pi_Sage. I'll continue this project next month, aiming to make it a centerpiece of my portfolio. I'm particularly interested in packaging the application into a standalone security appliance using Docker, enabling users to easily deploy locally hosted web apps. Moving forward, I'll research networking, CRUD operations, TypeScript, JavaScript, HTML, CSS, Vue.js, REST APIs, WebSockets, and responsive design to further enhance pi_Sage's capabilities. I will continue to develop the backend API while staying conscious to the legal issues, and controversy surrounding port scanning. Our application is one that has the potential to be misused with the right reconfiguration.  
 
 &nbsp;  
 &nbsp;  

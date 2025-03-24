@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import NmapScan from '../components/NmapScan.vue';
+
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <NmapScan />
   </main>
 </template>
