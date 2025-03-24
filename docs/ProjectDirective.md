@@ -235,6 +235,31 @@ At this point the backend was setup to use typescript, and we had an active and 
 
 ![server is active and running response on terminal](./img/server_is_active_and_running.png)
   
+&nbsp;    
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;    
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+
 
 ### 3. Setting up the router and nmapProcess
 
@@ -270,20 +295,23 @@ app.use('/scan', nMapRouter);   // here we map the nMapRouter to /scan in the ro
                                 // so we can access it's functionality via insert-host-name:3000/scan
 ```
 
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
+ 
 
 
 in another file we created a function that used spawn from child_process to handle running nmap and passing the data back to the request.[[5]](#5-nodejs-v23100-documentation-child-process--nodejs-v23100-documentation-nd-httpsnodejsorgapichild_processhtmlchild_processspawncommand-args-options)
+
+
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp; 
 
 
 ### 4. Connecting the backend to the frontend and displaying scan results
@@ -293,11 +321,12 @@ At this point I installed a few libraries on the frontend. The first one I insta
 at this point we had a front end that was displaying the nmap output, so I added some styles to make it look a little better and match the pre established vue template. I confirmed the frontend and backend were communicating with each other properly, and I have the beginning of my dashboard. 
 
 ![The first portion of the vue dashboard](./img/frontend_1.png)
-
+&nbsp;  
+&nbsp;  
 
 ## Summary
 
-Overall, these technologies form a viable combination and provide a solid foundation for pi_Sage. I'll continue this project next month, aiming to make it a centerpiece of my portfolio. I'm particularly interested in packaging the application into a standalone security appliance using Docker, enabling users to easily deploy locally hosted web apps. Moving forward, I'll research networking, CRUD operations, TypeScript, JavaScript, HTML, CSS, Vue.js, REST APIs, WebSockets, and responsive design to further enhance pi_Sage's capabilities. I will continue to develop the backend API while staying conscious to the legal issues, and controversy surrounding port scanning. Our application is one that has the potential to be misused with the right reconfiguration.  
+Overall, these technologies form a viable combination and provide a solid foundation for pi_Sage. I'll continue this project next month, aiming to make it a centerpiece of my portfolio. I'm particularly interested in packaging the application into a standalone security appliance using Docker, enabling users to easily deploy locally hosted web apps. Moving forward, I'll research networking, CRUD operations, TypeScript, JavaScript, HTML, CSS, Vue.js, REST APIs, WebSockets, and responsive design to further enhance pi_Sage's capabilities. I will continue to develop the backend API while staying conscious to the legal issues, and controversy surrounding port scanning. Our application is one that has the potential to be misused with the right reconfiguration, so we should be ever conscious of warning users of the potential in what they are holding. Potentially even including a warning in the license, or user agreement. 
 
 &nbsp;  
 &nbsp;  
@@ -334,24 +363,6 @@ Overall, these technologies form a viable combination and provide a solid founda
 &nbsp;  
 &nbsp;  
 &nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
-
 
 # Biblio
 
