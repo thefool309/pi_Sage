@@ -15,7 +15,7 @@ services:
         - ./backend:/app
 
   frontend:
-    build: ./frontend/vue
+    build: ./frontend
     network_mode: host
     ports:
       - "8080:5173"  # Maps host port 8080 to container port 5173
