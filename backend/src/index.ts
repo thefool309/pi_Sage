@@ -28,8 +28,8 @@ app.get("/status", (request: Request, response: Response) => {
   response.send("Server is active and running...\n");
 });
 
-app.use('/scan', nMapRouter);
-
+app.use('/scan', nMapRouter);   // here we map the nMapRouter to /scan in the root project
+                                // so we can access it's functionality via insert-host-name:3000/scan
 app.get('/', (req:Request, res: Response) => {
   res.send('Welcome to the pi_Shield API');
 })

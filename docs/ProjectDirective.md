@@ -259,6 +259,138 @@ At this point the backend was setup to use typescript, and we had an active and 
 &nbsp;  
 &nbsp;  
 &nbsp;  
+
+### 3. Setting up the router and nmapProcess
+
+In this case we had to set up a "route" like we did with the status command. "routes" are essentially the websites structure. In this case we establish the app in index.ts and then we will make multiple routers, routing each router to it's own route in the app. This looks something like what I have below
+
+```ts
+/* /src/api/routes/scanRoute.ts */
+import { runNmap } from "../services/nmapScanner";
+
+import  { Request, Response, Router } from "express";
+
+import dotenv from 'dotenv'
+
+dotenv.config();
+const localnetwork = process.env.LOCAL_NETWORK
+const nMapRouter = Router();
+nMapRouter.get( "/", async (req: Request, res: Response) => {   //here we create a router for all nmap requests in case we want 
+    try {                                                       // to create subroutes for different scan options
+        const result = await runNmap(localnetwork);
+        res.send(result);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+export default nMapRouter;
+```
+
+This line must be added to index.ts or these routes won't be resolved
+
+```ts
+app.use('/scan', nMapRouter);   // here we map the nMapRouter to /scan in the root project 
+                                // so we can access it's functionality via insert-host-name:3000/scan
+```
+
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+
+
+in another file we created a function that used spawn from child_process to handle running nmap and passing the data back to the request.[[5]](#5-nodejs-v23100-documentation-child-process--nodejs-v23100-documentation-nd-httpsnodejsorgapichild_processhtmlchild_processspawncommand-args-options)
+
+
+
+```ts
+import { spawn } from 'child_process';
+
+export function runNmap(target: string | undefined): Promise<string> {
+    return new Promise((resolve, reject) => {
+        if(target == undefined){
+            return reject(`Target is undefined`);     //error checking in case target is undefined
+        }
+        const command = 'nmap';
+        // Add -vv for more verbosity if needed
+        const args = ['-T4', '-v', '-sV', '-F',  target];
+    
+        const nmapProcess = spawn(command, args);
+    
+        let output = '';
+        nmapProcess.stdout.on('data', (data) => {       //successfull output
+          output += data.toString();
+          console.log(data.toString());
+        });
+    
+        nmapProcess.stderr.on('data', (data) => {       //stderr won't halt the process but will print an error to the console for debugging
+          console.error(`Nmap stderr: ${data}`);
+        });
+    
+        nmapProcess.on('error', (error) => {            // on an error we send a rejection carrying the error message. 
+          reject(`Error: ${error.message}`);
+        });
+    
+        nmapProcess.on('close', (code) => {             //if nmap exited with an error code reject with that code. 
+          if (code !== 0) {
+            return reject(`Nmap process exited with code ${code}`);
+          }
+          resolve(output);
+        });
+    });
+}
+```
+
+
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
 &nbsp;  
 &nbsp;  
 &nbsp;  
@@ -278,7 +410,8 @@ At this point the backend was setup to use typescript, and we had an active and 
 
 ### 2. You, E. (2021, August 31). *Vue.js. Quick Start | Vue.js.* [https://vuejs.org/guide/quick-start.html](https://vuejs.org/guide/quick-start.html) 
 
-### 3. Lyon, G. (n.d.). Legal issues: Nmap network scanning. Legal Issues | Nmap Network Scanning. [https://nmap.org/book/legal-issues.html](https://nmap.org/book/legal-issues.html) 
+### 3. Lyon, G. (n.d.). *Legal issues: Nmap network scanning. Legal Issues | Nmap Network Scanning.* [https://nmap.org/book/legal-issues.html](https://nmap.org/book/legal-issues.html) 
 
-### 4. Adewakun, I. (2024, June 4). Using sequelize with typescript. LogRocket Blog. [https://blog.logrocket.com/using-sequelize-with-typescript/](https://blog.logrocket.com/using-sequelize-with-typescript/)
+### 4. Adewakun, I. (2024, June 4). *Using sequelize with typescript. LogRocket Blog.* [https://blog.logrocket.com/using-sequelize-with-typescript/](https://blog.logrocket.com/using-sequelize-with-typescript/)
 
+### 5. *Node.js V23.10.0 documentation. Child process | Node.js v23.10.0 Documentation. (n.d.).* [https://nodejs.org/api/child_process.html#child_processspawncommand-args-options](https://nodejs.org/api/child_process.html#child_processspawncommand-args-options)
