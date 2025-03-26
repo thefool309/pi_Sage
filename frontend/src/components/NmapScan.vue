@@ -18,7 +18,7 @@
     console.log("fetch scan data hit");
     try {
       const response = await axios.get(       //await on axios to get the response from localhost so we can display it to the dashboard
-        `http://localhost:3000/scan`
+        `http://${ import.meta.env.VITE_APP_LOCAL_NETWORK }:${ import.meta.env.VITE_APP_PORT }/scan`
       );
       scanData.value = response.data;
     }catch (error){
