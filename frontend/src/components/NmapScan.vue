@@ -28,7 +28,6 @@
   }
 
   onMounted(() =>{
-    fetchScanData(); // initial fetch
     pollingInterval = window.setInterval(fetchScanData, 5000); // retry the request for the scan data every 5 seconds until a response is recieved.
   })                                                           // later we will adapt this so that it will run on a timer all the time. This current solution is not perfect 
 
