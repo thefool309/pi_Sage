@@ -1,41 +1,59 @@
-
-
 <template>
   <div class="container">
     <h1>Nmap Scan Results</h1>
+
     <pre class="scan-output">{{ scanData }}</pre>
-    <div class="refresh-div" @click="fetchScanData">Refresh Scan Now</div>
+
+    <div class="button-group">
+      <div class="refresh-div" @click="startPolling" :class="{ disabled: isPolling }">
+        {{ isPolling ? "Polling..." : "Start Scan Polling" }}
+      </div>
+      <div class="stop-div" @click="stopPolling" :class="{ disabled: !isPolling }">
+        Stop Polling
+      </div>
+    </div>
   </div>
 </template>
+
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted } from 'vue';
-  import axios from 'axios';
+import { ref, onUnmounted } from 'vue';
+import axios from 'axios';
 
-  const scanData = ref('Loading scan data...\n This may take a moment.\n')
-  let pollingInterval: number;
+const scanData = ref('Waiting for scan...\n');
+const isPolling = ref(false);
+let pollingInterval: number | null = null;
 
-  const fetchScanData = async () => {       
-    console.log("fetch scan data hit");
-    try {
-      const response = await axios.get(       //await on axios to get the response from localhost so we can display it to the dashboard
-        `http://${ import.meta.env.VITE_APP_LOCAL_NETWORK }:${ import.meta.env.VITE_APP_PORT }/scan`
-      );
-      scanData.value = response.data;
-    }catch (error){
-      console.error("Error fetching scan: ", error);
-      scanData.value = "Error fetching scan data. Check logs."    //if we have an error fetching the scan direct user to logs for debugging purposes
-    }
+const fetchScanData = async () => {
+  try {
+    const response = await axios.get(
+      `http://${import.meta.env.VITE_APP_LOCAL_NETWORK}:${import.meta.env.VITE_APP_PORT}/scan`
+    );
+    scanData.value = response.data;
+  } catch (error) {
+    console.error("Error fetching scan: ", error);
+    scanData.value = "Error fetching scan data. Check logs.";
   }
+};
 
-  onMounted(() =>{
-    pollingInterval = window.setInterval(fetchScanData, 5000); // retry the request for the scan data every 5 seconds until a response is recieved.
-  })                                                           // later we will adapt this so that it will run on a timer all the time. This current solution is not perfect 
+const startPolling = () => {
+  if (!isPolling.value) {
+    isPolling.value = true;
+    fetchScanData(); // Run once immediately
+    pollingInterval = window.setInterval(fetchScanData, 5000);
+  }
+};
 
-  onUnmounted(() => {
+const stopPolling = () => {
+  if (pollingInterval !== null) {
     clearInterval(pollingInterval);
-  })
+    pollingInterval = null;
+    isPolling.value = false;
+  }
+};
 
-
+onUnmounted(() => {
+  stopPolling();
+});
 </script>
 
 <style lang="css" scoped>
@@ -48,7 +66,7 @@
 
 h1 {
   text-align: center;
-  color: #333;
+  color: --color-text;
   margin-bottom: 20px;
 }
 
@@ -64,18 +82,31 @@ h1 {
   overflow-y: auto;
   margin-bottom: 20px;
 }
-.refresh-div {
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.refresh-div,
+.stop-div {
   cursor: pointer;
-  background-color: #007BFF;
-  color: #fff;
+  background-color: hsla(150, 40%, 70%, 1);
+  color: #333333;
   padding: 10px 20px;
   border-radius: 5px;
   text-align: center;
-  display: inline-block;
   transition: background-color 0.3s ease;
 }
 
-.refresh-div:hover {
-  background-color: #0056b3;
+.refresh-div:hover,
+.stop-div:hover {
+  background-color: #abe4fa;
+}
+
+.disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 </style>

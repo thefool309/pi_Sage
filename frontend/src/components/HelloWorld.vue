@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
+    <h1 class="pink">{{ msg }}</h1>
     <h3>
       Welcome to pi_Sage! This docker container is built with 
       <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
