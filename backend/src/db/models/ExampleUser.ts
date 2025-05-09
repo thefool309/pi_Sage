@@ -5,7 +5,7 @@ import { toNamespacedPath } from 'path';
 
 // Define a TypeScript interface for type-checking.
 export interface IUser {
-    id?: number;
+    id: number;
     name: string;
     email: string;
 }
