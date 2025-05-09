@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../database';
+import { Host } from './Host'
 
 export interface IScan {
     id: number;
@@ -54,4 +55,9 @@ Scan.init(
 Scan.hasMany(Host, {
     foreignKey: 'scanId',
     as: 'hosts',
+});
+
+Host.belongsTo(Scan, {
+    foreignKey: 'scanId',
+    as: 'scan'
 });
