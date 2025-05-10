@@ -1,4 +1,9 @@
 import { Sequelize } from "sequelize";
+import { Scan } from "./models/Scan";
+import { Host } from "./models/Host";
+import { Port } from "./models/Port";
+
+
 
 import dotenv from 'dotenv'
 
@@ -14,6 +19,7 @@ export const connectDB = async () => {
     try {
         //Test the connection
         await sequelize.authenticate();
+        await sequelize.sync();
         console.log('Connection to MYSQL database succeeded')
     } catch(error) {
         console.error('Unable to connect to the MYSQL database: ', error, '\n');
