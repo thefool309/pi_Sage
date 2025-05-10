@@ -19,7 +19,7 @@ export const connectDB = async () => {
     try {
         //Test the connection
         await sequelize.authenticate();
-        await sequelize.sync();
+        await sequelize.sync();             // this should synchronize all models to database
         console.log('Connection to MYSQL database succeeded')
     } catch(error) {
         console.error('Unable to connect to the MYSQL database: ', error, '\n');
