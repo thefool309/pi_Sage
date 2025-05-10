@@ -1,13 +1,17 @@
 import { spawn } from 'child_process';
+import fs from 'fs/promises';
 
-export function runNmap(target: string | undefined): Promise<string> {
+export async function runNmap(target: string | undefined): Promise<string> {
     return new Promise((resolve, reject) => {
         if(target == undefined){
             return reject(`Target is undefined`);           //error checking in case target is undefined
         }
         const command = 'nmap';
+        const outputPath = './nmap-output/output.json'
         // Add -vv for more verbosity if needed
-        const args = ['-T4', '-v', '-sV', '-F',  target];
+        // -T4 is for speed -v is for verbosity -sV detects the version of services running on open ports
+        // -F is for fast, and -oJ outputs to a json file for the backend
+        const args = ['-T4', '-v', '-sV', '-F', '-oJ', outputPath, target];
     
         const nmapProcess = spawn(command, args);
     
@@ -25,11 +29,18 @@ export function runNmap(target: string | undefined): Promise<string> {
           reject(`Error: ${error.message}`);
         });
     
-        nmapProcess.on('close', (code) => {             //if nmap exited with an error code reject with that code. 
+        nmapProcess.on('close', async (code) => {             //if nmap exited with an error code reject with that code. 
           if (code !== 0) {
             return reject(`Nmap process exited with code ${code}`);
           }
-          resolve(output);
+          try {
+            const jsonData = await fs.readFile(outputPath, 'utf-8'); // convert json file to string
+            resolve(JSON.parse(jsonData));      // parse into jsonData for the backend to handle
+          } 
+          catch (err) {
+            reject(`Failed to read or parse JSON ouput: ${err}`);
+          }
+          
         });
     });
 }
