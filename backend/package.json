@@ -17,12 +17,14 @@
     "express": "^4.21.2",
     "mysql2": "^3.14.0",
     "node-libnmap": "^0.2.15",
-    "sequelize": "^6.37.6"
+    "sequelize": "^6.37.6",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.13.11",
+    "@types/xml2js": "^0.4.14",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }
