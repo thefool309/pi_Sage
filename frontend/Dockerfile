@@ -1,8 +1,10 @@
 # Use the official Node.js image as base
-FROM node:18
+FROM node:20-alpine
 
 # Set the working directory in the container
 WORKDIR /app
+
+ENV ROLLUP_NO_NATIVE=true
 
 # Copy package.json and package-lock.json (if available)
 COPY package.json package-lock.json ./
@@ -21,4 +23,4 @@ EXPOSE 5173
 
 # Start the Vite dev server
 ENTRYPOINT ["./entrypoint.sh"]
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev", "ROLLUP_NO_NATIVE=true"]

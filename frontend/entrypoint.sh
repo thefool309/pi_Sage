@@ -2,7 +2,7 @@
 
 # Ensure /sbin and /usr/sbin are in the PATH so that the 'ip' command can be found.
 export PATH=$PATH:/sbin:/usr/sbin
-
+export ROLLUP_NO_NATIVE=true
 # If the .env file doesn't exist, create it.
 if [ ! -f .env ]; then
     echo "Creating Default .env file"

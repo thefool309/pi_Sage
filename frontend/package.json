@@ -34,5 +34,11 @@
     "vite": "^6.2.1",
     "vite-plugin-vue-devtools": "^7.7.2",
     "vue-tsc": "^2.2.8"
+  },
+  "resolutions": {
+    "rollup": "npm:@rollup/wasm-node"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.27.3"
   }
 }
