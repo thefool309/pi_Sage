@@ -1,6 +1,6 @@
 # pisage_frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+This should help get you started developing with Vue 3 in Vite for pi_Sage.
 
 ## Recommended IDE Setup
 
