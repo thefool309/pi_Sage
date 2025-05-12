@@ -2,6 +2,8 @@
 
 Welcome to pi_Sage. pi_Sage is currently in a state of active development, and will be until at least the end of May 2025. This is a project I am doing for school, so no contributions will be accepted until I recieve my final grade. 
 
+please refer to the [wiki](https://github.com/thefool309/pi_Sage/wiki) for further documentation
+
 ## ***IMPORTANT DISCLAIMER*** 
 ***nmap is an open source security tool for scanning ports, that is used by cyber security professionals, and sys admins. There is a lot of controversy around port scanning, so don't do anything to get yourself arrested, or sued. Do not run this software on a network you aren't an admin of, or have expressed permission to scan open ports on. You can read more about the legal issues surrounding port scanning [here](https://nmap.org/book/legal-issues.html). I am not a lawyer however and if you have any real questions surrounding the legality of using nmap you should consult a lawyer.***
 
