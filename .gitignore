@@ -29,7 +29,7 @@ mysql_data/
 # Docker
 docker-compose.override.yml
 docker-compose.dev.yml
-**/Dockerfile
+
 build/
 .dockerignore
 *.pid
