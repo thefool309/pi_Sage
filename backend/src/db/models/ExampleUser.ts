@@ -5,16 +5,20 @@ import { toNamespacedPath } from 'path';
 
 // Define a TypeScript interface for type-checking.
 export interface IUser {
-    id: number;
+  //the id must be optional in the interface 
+  // this ensures that the interface can be initialized without the id
+  // this helps when creating a database instance of User
+  // or anything that implements it
+    id?: number;
     name: string;
-    email: string;
+    email?: string;
 }
 
 // Extend Sequelize's Model class.
 export class User extends Model<IUser> implements IUser {
     public id!: number;       // The "!" tells TypeScript that this value will be set.
     public name!: string;
-    public email!: string;    // a "?" tells TypeScript that the value could be set but doesnt require it
+    public email?: string;    // a "?" tells TypeScript that the value could be set but doesnt require it
   }
 
 // Initialize the model and define its schema.
@@ -23,7 +27,8 @@ User.init(
       id: {
         type: DataTypes.INTEGER.UNSIGNED, // An unsigned integer.
         autoIncrement: true,                // Automatically increments.
-        primaryKey: true,                   // Primary key of the table.
+        primaryKey: true,  
+                       // Primary key of the table.
       },
       name: {
         type: new DataTypes.STRING(128),    // String with a max length of 128.
@@ -31,11 +36,12 @@ User.init(
       },
       email: {
         type: new DataTypes.STRING(128),
-        allowNull: false,
+        allowNull: true,
         unique: true,                       // Must be unique.
       },
     },
     {
+      initialAutoIncrement: "100",
       tableName: 'users',   // Name of the table in the database.
       sequelize,            // Passing the Sequelize instance.
     }

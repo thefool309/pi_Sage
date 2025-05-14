@@ -48,7 +48,8 @@ Scan.init(
     },
     {
         sequelize,
-        tableName: 'scan-results'
+        tableName: 'scan-results',
+        timestamps: true
     }
 )
 

@@ -45,7 +45,8 @@ Host.init(
     },
     {
         sequelize,
-        tableName: 'Hosts'
+        tableName: 'Hosts',
+        timestamps: true
     }
 );
 
