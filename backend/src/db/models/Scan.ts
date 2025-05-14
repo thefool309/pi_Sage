@@ -32,7 +32,7 @@ Scan.init(
             primaryKey: true
         },
         date:{
-            type: DataTypes.DATETIME,
+            type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
             allowNull: true
         },
@@ -56,9 +56,9 @@ Scan.init(
         hostUp:{
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false
-        }
+        },
         hostDown:{
-            type DataTypes.INTEGER.UNSIGNED,
+            type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false
         }
     },
