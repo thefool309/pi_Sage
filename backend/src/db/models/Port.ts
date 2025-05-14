@@ -12,13 +12,13 @@ export interface IPort {
 }
 
 export class Port extends Model<IPort> implements IPort {
-    id!: number;
-    portNumber!: number;
-    protocol!: string;
-    state!: string;
-    serviceName?: string | undefined;
-    hostId!: number;
-    extraInfo?: string | undefined;
+    declare id: number;
+    declare portNumber: number;
+    declare protocol: string;
+    declare state: string;
+    declare serviceName: string | undefined;
+    declare hostId: number;
+    declare extraInfo: string | undefined;
 }
 
 Port.init(

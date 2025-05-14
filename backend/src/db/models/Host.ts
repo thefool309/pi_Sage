@@ -11,11 +11,11 @@ export interface IHost {
 }
 
 export class Host extends Model<IHost> implements IHost {
-    id!: number;
-    ip!: string;
-    status!: string;
-    ports!: number[];
-    scanId!: number;
+    declare id: number;
+    declare ip: string;
+    declare status: string;
+    declare ports: number[];
+    declare scanId: number;
 }
 
 Host.init(

@@ -12,12 +12,12 @@ export interface IScan {
 }
 
 export class Scan extends Model<IScan> implements IScan {
-    public id!: number;
-    public date?: string;
-    public scanResults!: object;
-    public status?: 'pending' | 'in-progress' | 'completed' | 'failed';
-    public duration!: number;
-    public hostCount!: number;
+    declare id: number;
+    declare date: string;
+    declare scanResults: object;
+    declare status: string;
+    declare duration: number;
+    declare hostCount: number;
 }
 
 Scan.init(
@@ -28,6 +28,10 @@ Scan.init(
             primaryKey: true
         },
         date:{
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        status:{
             type: DataTypes.STRING,
             allowNull: true
         },
@@ -55,7 +59,7 @@ Scan.init(
 
 Scan.hasMany(Host, {
     foreignKey: 'scanId',
-    as: 'hosts',
+    as: 'hosts'
 });
 
 Host.belongsTo(Scan, {

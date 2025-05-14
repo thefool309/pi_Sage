@@ -1,21 +1,23 @@
 import { TestParseAndSaveScanVsExpectedOutput } from "../../api/services/testServicesHere";
 import { User } from "./ExampleUser";
-import chalk, { Chalk } from 'chalk';
 import { sequelize } from '../database';
+import chalk from 'chalk';
 /**
  * Test suit for database models.
  */
 async function testUserModel() : Promise<boolean> {
     let testPassed : boolean = false;
     const newUser = await User.create({
-        name: "newUser"
+        name: "newUser",
     });
-    testPassed = newUser?.name === "newUser";
+    testPassed = newUser.name === "newUser";
+    console.log("new user name = " + newUser.name);
     await newUser.destroy();
     return testPassed;
 }
 
 async function RunTests() {
+    
     try {
     await sequelize.sync({force: true});
     let userModelTestResult: boolean = await testUserModel();
@@ -27,7 +29,7 @@ async function RunTests() {
         }
     }
     catch (err){
-        console.error(chalk.red("Test suite encountered an error: "), err);
+        console.log(chalk.red("Test suite encountered an error: " + (err as Error).toString()));
     }
     finally {
         await sequelize.close(); // cleanly close the db

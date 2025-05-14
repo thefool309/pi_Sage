@@ -16,10 +16,10 @@ export interface IUser {
 
 // Extend Sequelize's Model class.
 export class User extends Model<IUser> implements IUser {
-    public id!: number;       // The "!" tells TypeScript that this value will be set.
-    public name!: string;
-    public email?: string;    // a "?" tells TypeScript that the value could be set but doesnt require it
-  }
+    declare id: number;       // The "!" tells TypeScript that this value will be set.
+    declare name: string;
+    declare email: string;    // a "?" tells TypeScript that the value could be set but doesnt require it
+}
 
 // Initialize the model and define its schema.
 User.init(
