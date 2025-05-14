@@ -12,7 +12,14 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
     console.log(JSON.stringify(jsonData));
     // Create Scan entry
     
-    const scan = Scan.create();
+    // const scan = Scan.create({
+    //     scanResults: jsonData
+    //     duration: <FLOAT>jsonData.runstats.elapsed;
+    //     status: jsonData.runstats.summary;
+    //     hostCount: <integer>jsonData.hosts.total;
+    //     hostUp:  <integer>jsonData.hosts.up;
+    //     hostDown: <integer>jsonData.hosts.down;
+    // });
     
     const hosts = jsonData.nmaprun.host;  
     // For each host in scan create a host entry

@@ -20,7 +20,7 @@ async function RunTests() {
     
     try {
     await sequelize.sync({force: true});
-    let userModelTestResult: boolean = await testUserModel();
+    let userModelTestResult: boolean = await testUserModel();   //await on the Promise from testUserModel
         if (userModelTestResult) {
             console.log("UserModel Test: " + chalk.green("PASSED"));
         }

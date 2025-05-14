@@ -6,9 +6,11 @@ export interface IScan {
     id: number;
     date?: string;
     scanResults: object;
-    status?: 'pending' | 'in-progress' | 'completed' | 'failed';
+    status: string;
     duration: number;
     hostCount: number;
+    hostUp: number;
+    hostDown: number;
 }
 
 export class Scan extends Model<IScan> implements IScan {
@@ -18,6 +20,8 @@ export class Scan extends Model<IScan> implements IScan {
     declare status: string;
     declare duration: number;
     declare hostCount: number;
+    declare hostUp: number;
+    declare hostDown: number;
 }
 
 Scan.init(
@@ -28,7 +32,8 @@ Scan.init(
             primaryKey: true
         },
         date:{
-            type: DataTypes.STRING,
+            type: DataTypes.DATETIME,
+            defaultValue: DataTypes.NOW,
             allowNull: true
         },
         status:{
@@ -41,13 +46,20 @@ Scan.init(
 
         },
         duration:{
-            type: DataTypes.INTEGER.UNSIGNED,
+            type: DataTypes.FLOAT.UNSIGNED,
             allowNull: false
-
         },
         hostCount:{
             type: DataTypes.INTEGER.UNSIGNED,
-            allowNull:false
+            allowNull: false
+        },
+        hostUp:{
+            type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: false
+        }
+        hostDown:{
+            type DataTypes.INTEGER.UNSIGNED,
+            allowNull: false
         }
     },
     {
