@@ -42,6 +42,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+*.xml
 
 node_modules
 .DS_Store
@@ -65,3 +66,4 @@ coverage
 *.code-workspace
 
 *.tsbuildinfo
+

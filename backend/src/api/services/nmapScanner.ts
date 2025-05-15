@@ -9,7 +9,7 @@ export async function runNmap(target: string | undefined): Promise<string> {
             return reject(`Target is undefined`);           //error checking in case target is undefined
         }
         const command = 'nmap';
-        const outputPath = './nmap-output/output.xml'
+        const outputPath = './src/api/services/.nmap-output/output.xml'
         // Add -vv for more verbosity if needed
         // -T4 is for speed -v is for verbosity -sV detects the version of services running on open ports
         // -F is for fast, and -oX outputs to an xml file
