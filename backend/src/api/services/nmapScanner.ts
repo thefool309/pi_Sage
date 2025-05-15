@@ -39,6 +39,7 @@ export async function runNmap(target: string | undefined): Promise<string> {
         return reject(`Nmap process exited with code ${code}`);
       }
       try {
+        // TODO: pass filePath to parseAndSaveScan helper function
         const xmlData = await fs.readFile(outputPath, "utf-8"); // convert xml file to string
         var jsonData = await parseStringPromise(xmlData);
         resolve(JSON.stringify(jsonData)); // parse into string for the backend to handle
