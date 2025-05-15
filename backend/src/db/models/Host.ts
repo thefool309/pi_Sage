@@ -4,49 +4,82 @@ import { Port } from './Port';
 
 export interface IHost {
     id?: number;
-    ip: string;
-    status: string;
-    ports: number[];
     scanId?: number;
+    //status members
+    status: string;
+    reason: string;
+    reason_ttl: string;
+    //address members
+    addr: string;
+    addr_type: string;
+    mac_addr?: string;
+    vendor?: string;
 }
 
 export class Host extends Model<IHost> implements IHost {
     declare id: number;
-    declare ip: string;
-    declare status: string;
-    declare ports: number[];
     declare scanId: number;
+    //status members
+    declare status: string;
+    declare reason: string;
+    declare reason_ttl: string;
+    //address members
+    declare addr: string;
+    declare addr_type: string;
+    declare mac_addr?: string;
+    declare vendor?: string;
+
 }
 
 Host.init(
     {
+        
         id: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true
             
         },
-        ip: {
-            type: DataTypes.STRING(45),
-            allowNull: false
-        },
-        status: {
-            type: DataTypes.STRING(32), 
-            allowNull: false
-        },
-        ports: {
-            type: DataTypes.JSON,
-            allowNull: false
-        },
         scanId: {
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false
+        },
+        // status members
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        reason: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        reason_ttl: { 
+            type: DataTypes.STRING, 
+            allowNull: false
+        },
+        // address members
+        addr: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        addr_type: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        mac_addr: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        vendor: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     },
     {
         sequelize,
         tableName: 'Hosts',
-        timestamps: true
+        timestamps: true,
+        initialAutoIncrement: '300'
     }
 );
 
