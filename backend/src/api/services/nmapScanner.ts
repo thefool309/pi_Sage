@@ -1,6 +1,7 @@
 import { spawn } from "child_process";
 import fs from "fs/promises";
 import { parseStringPromise } from "xml2js";
+import { deleteXmlFile } from "./deleteXmlFile";
 
 export async function runNmap(target: string | undefined): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -42,7 +43,8 @@ export async function runNmap(target: string | undefined): Promise<string> {
         // TODO: pass filePath to parseAndSaveScan helper function
         const xmlData = await fs.readFile(outputPath, "utf-8"); // convert xml file to string
         var jsonData = await parseStringPromise(xmlData);
-        resolve(JSON.stringify(jsonData)); // parse into string for the backend to handle
+        deleteXmlFile(xmlData);
+        resolve(JSON.stringify(jsonData));
       } catch (err) {
         reject(`Failed to read or parse JSON ouput: ${err}`);
       }
