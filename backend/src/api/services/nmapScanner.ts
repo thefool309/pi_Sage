@@ -3,7 +3,10 @@ import fs from "fs/promises";
 import { parseStringPromise } from "xml2js";
 import { deleteXmlFile } from "./deleteXmlFile";
 
-export async function runNmap(target: string | undefined): Promise<string> {
+export async function runNmap(
+  target: string | undefined,
+  _args: string[] | undefined
+): Promise<string> {
   return new Promise((resolve, reject) => {
     if (target == undefined) {
       return reject(`Target is undefined`); //error checking in case target is undefined
@@ -13,8 +16,12 @@ export async function runNmap(target: string | undefined): Promise<string> {
     // Add -vv for more verbosity if needed
     // -T4 is for speed -v is for verbosity -sV detects the version of services running on open ports
     // -F is for fast, and -oX outputs to an xml file
-    const args = ["-T4", "-v", "-sV", "-F", "-oX", outputPath, target];
-
+    let args: string[];
+    if (_args == undefined) {
+      args = ["-T4", "-v", "-sV", "-F", "-oX", outputPath, target];
+    } else {
+      args = _args;
+    }
     const nmapProcess = spawn(command, args);
 
     let output = "";
