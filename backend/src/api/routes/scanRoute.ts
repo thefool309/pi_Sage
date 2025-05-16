@@ -53,6 +53,11 @@ nMapRouter.get("/", async (req: Request, res: Response) => {
     console.error("Backend" + chalk.red(" failed ") + "to resolve runNmap");
     res.status(500).send(error);
   }
+  // TODO: Add scan route for scan without '-F'
+
+  /* TODO: Add scan route for scans with varying '-T{x}'
+    where x = the timing template level you're shooting for
+   -T0 = quietest and slowest, -T5 =  fastest and loudest */
 });
 
 export default nMapRouter;
