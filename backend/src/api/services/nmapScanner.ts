@@ -5,7 +5,7 @@ import { deleteXmlFile } from "./deleteXmlFile";
 
 export async function runNmap(
   target: string | undefined,
-  _args: string[] | undefined
+  _args?: string[] | undefined
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     if (target == undefined) {
