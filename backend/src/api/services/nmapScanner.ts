@@ -4,11 +4,11 @@ import { parseStringPromise } from "xml2js";
 import { deleteXmlFile } from "./deleteXmlFile";
 
 export async function runNmap(
-  target: string | undefined,
+  _target: string | undefined,
   _args?: string[] | undefined
 ): Promise<string> {
   return new Promise((resolve, reject) => {
-    if (target == undefined) {
+    if (_target == undefined) {
       return reject(`Target is undefined`); //error checking in case target is undefined
     }
     const command = "nmap";
@@ -18,7 +18,7 @@ export async function runNmap(
     // -F is for fast, and -oX outputs to an xml file
     let args: string[];
     if (_args == undefined) {
-      args = ["-T4", "-v", "-sV", "-F", "-oX", outputPath, target];
+      args = ["-T4", "-v", "-sV", "-F", "-oX", outputPath, _target];
     } else {
       args = _args;
     }
