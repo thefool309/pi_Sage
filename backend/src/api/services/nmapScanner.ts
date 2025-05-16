@@ -51,7 +51,7 @@ export async function runNmap(
         // TODO: pass filePath to parseAndSaveScan helper function
         const xmlData = await fs.readFile(outputPath, "utf-8"); // convert xml file to string
         var jsonData = await parseStringPromise(xmlData);
-        deleteXmlFile(xmlData);
+        deleteXmlFile(outputPath);
         resolve(JSON.stringify(jsonData));
       } catch (err) {
         reject(`Failed to read or parse JSON ouput: ${err}`);

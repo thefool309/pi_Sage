@@ -3,6 +3,7 @@ import { Scan } from "../../db/models/Scan";
 import fs from "fs/promises";
 import { parseStringPromise } from "xml2js";
 import { Host } from "../../db/models/Host";
+import { Port } from "../../db/models/Port";
 
 export async function parseAndSaveScan(filePath: string): Promise<null | any> {
   try {
@@ -23,9 +24,11 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
       summary: jsonData.runstats.finished?.summary,
     });
     const hosts = jsonData.nmaprun?.host;
+    /*
     // TODO: For each host in scan create a host entry
+    */
     for (const host of hosts) {
-      Host.create({
+      const newHost = await Host.create({
         scanId: scan.id,
         status: host.status.$.state,
         reason: host.status.$.reason,
@@ -35,8 +38,12 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
         mac_addr: host.address[1]?.$.addr,
         vendor: host.address[1]?.$.addr,
       });
+      // TODO: for each port in each host create a port entry
+      const ports = host.ports?.[0]?.port ?? [];
+      for (const port of ports) {
+      }
     }
-    // TODO: for each port in each host create a port entry
+
     return jsonData;
   } catch (err) {
     console.error("There was an error parsing and saving the scan", err);
