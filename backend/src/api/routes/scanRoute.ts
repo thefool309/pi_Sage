@@ -13,6 +13,8 @@ let CACHE_TIMEOUT = 15 * 60 * 1000;
 
 let ongoingScanPromise: Promise<string> | null = null;
 
+const outputPath = "./src/api/services/.nmap-output/output.xml";
+let args: string[] = ["-T4", "-v", "-sV", "-F", "-oX", outputPath];
 const localnetwork = process.env.LOCAL_NETWORK;
 const nMapRouter = Router();
 nMapRouter.get("/", async (req: Request, res: Response) => {

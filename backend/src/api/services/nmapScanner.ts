@@ -20,6 +20,7 @@ export async function runNmap(
     if (_args == undefined) {
       args = ["-T4", "-v", "-sV", "-F", "-oX", outputPath, _target];
     } else {
+      _args.push(_target);
       args = _args;
     }
     const nmapProcess = spawn(command, args);
