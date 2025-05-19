@@ -8,10 +8,10 @@ export interface IHost {
   //status members
   status: string;
   reason: string;
-  reason_ttl: string;
+  reason_ttl: number;
   //address members
-  addr: string;
-  addr_type: string;
+  addr?: string;
+  addr_type?: string;
   mac_addr?: string;
   vendor?: string;
 }
@@ -22,10 +22,10 @@ export class Host extends Model<IHost> implements IHost {
   //status members
   declare status: string;
   declare reason: string;
-  declare reason_ttl: string;
+  declare reason_ttl: number;
   //address members
-  declare addr: string;
-  declare addr_type: string;
+  declare addr?: string;
+  declare addr_type?: string;
   declare mac_addr?: string;
   declare vendor?: string;
 }
@@ -51,17 +51,17 @@ Host.init(
       allowNull: false,
     },
     reason_ttl: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     // address members
     addr: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     addr_type: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     mac_addr: {
       type: DataTypes.STRING,
