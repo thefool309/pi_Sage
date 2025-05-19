@@ -16,11 +16,11 @@ async function parseJson(filePath: string): Promise<any> {
 export async function parseAndSaveScan(filePath: string): Promise<null | any> {
   try {
     let jsonData = await parseJson(filePath);
-    /* 
-    // TODO: create a Scan entry 
-    */
+
+    // create a Scan entry for the database
+
     const runstats = jsonData.nmaprun?.runstats[0];
-    if (!runstats) throw new Error("Missing runstats");
+    if (!runstats) throw new Error("Missing runstats\n");
     const runHosts = runstats.hosts[0].$;
     const fin = runstats.finished[0].$;
     const scan = await Scan.create({
@@ -34,9 +34,8 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
     });
     const hosts = jsonData.nmaprun?.host ?? [];
 
-    /*
-    // TODO: For each host in scan create a host entry
-    */
+    //  For each host in scan create a host entry in the database
+
     for (const host of hosts) {
       const newHost = await Host.create({
         scanId: scan.id,
@@ -50,17 +49,15 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
       });
 
       const extraPorts = host.ports?.[0]?.extraports ?? [];
-      /*
-      // TODO: implement logic for extraports loop
-      */
+
+      // logic for extraports loop. Here we handle the "extraports" property of the xml2js data
+      // extraports typically represents the closed ports
       const extraData = extraPorts[0]?.extrareasons[0]?.$;
       let expandedExtras = extraData ? expandPortList(extraData.ports) : [];
       let extraReason = extraData?.reason;
       let extraProto = extraData?.proto;
       let extraState = extraPorts[0]?.$.state;
-      /*
-      // TODO: for each port in each host create a port entry
-      */
+
       for (const port of expandedExtras) {
         const newPort = await Port.create({
           portNumber: port,
@@ -71,7 +68,7 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
           reason_ttl: 0,
         });
       }
-
+      // for each port in each host create a port entry in the database
       const ports = host.ports?.[0]?.port ?? [];
       for (const port of ports) {
         const st = port.state[0].$;
