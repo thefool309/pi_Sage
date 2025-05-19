@@ -1,4 +1,3 @@
-import { TestParseAndSaveScanVsExpectedOutput } from "../../api/services/testServicesHere";
 import { User } from "./ExampleUser";
 import { sequelize } from "../database";
 import chalk from "chalk";

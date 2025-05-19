@@ -48,17 +48,19 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
         mac_addr: host.address[1]?.$.addr,
         vendor: host.address[1]?.$.vendor,
       });
-      /*
-      // TODO: for each port in each host create a port entry
-      */
+
       const extraPorts = host.ports?.[0]?.extraports ?? [];
+      /*
       // TODO: implement logic for extraports loop
+      */
       const extraData = extraPorts[0]?.extrareasons[0]?.$;
       let expandedExtras = extraData ? expandPortList(extraData.ports) : [];
       let extraReason = extraData?.reason;
       let extraProto = extraData?.proto;
       let extraState = extraPorts[0]?.$.state;
-
+      /*
+      // TODO: for each port in each host create a port entry
+      */
       for (const port of expandedExtras) {
         const newPort = await Port.create({
           portNumber: port,
@@ -74,19 +76,19 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
       for (const port of ports) {
         const st = port.state[0].$;
         const serv = port.service?.[0]?.$;
-        const cpe = port.service?.[0]?.cpe;
+        const cpe = port.service?.[0]?.cpe ?? [];
         const newPort = await Port.create({
-          portNumber: parseInt(port.$.portid),
+          portNumber: parseInt(port.$.portid, 10),
           host_id: newHost.id,
           protocol: port.$.protocol,
           state: st.state,
           reason: st?.reason,
           reason_ttl: parseInt(st?.reason_ttl, 10),
           service_name: serv?.name,
-          service_product: serv?.product,
-          service_method: serv?.method,
-          service_version: serv?.version,
-          cpe: cpe[0],
+          service_product: serv?.product ?? null,
+          service_method: serv?.method ?? null,
+          service_version: serv?.version ?? null,
+          cpe: cpe[0] ?? null,
         });
       }
     }

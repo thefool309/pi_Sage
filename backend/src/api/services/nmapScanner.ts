@@ -2,6 +2,7 @@ import { spawn } from "child_process";
 import fs from "fs/promises";
 import { parseStringPromise } from "xml2js";
 import { deleteXmlFile } from "./deleteXmlFile";
+import { parseAndSaveScan } from "./scanDbService";
 
 export async function runNmap(
   _target: string | undefined,
@@ -48,9 +49,10 @@ export async function runNmap(
         return reject(`Nmap process exited with code ${code}`);
       }
       try {
+        /*
         // TODO: pass filePath to parseAndSaveScan helper function
-        const xmlData = await fs.readFile(outputPath, "utf-8"); // convert xml file to string
-        var jsonData = await parseStringPromise(xmlData);
+        */
+        const jsonData = (await parseAndSaveScan(outputPath)) || undefined;
         deleteXmlFile(outputPath);
         resolve(JSON.stringify(jsonData));
       } catch (err) {
