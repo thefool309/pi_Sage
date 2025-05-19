@@ -1,30 +1,4 @@
-version: '3.8'
 services:
-  backend:
-    build: ./backend
-    network_mode: host
-    ports:
-      - "3000:3000"
-    depends_on:
-      - database
-    environment:
-      USE_HOST_NETWORK: true
-      NODE_ENV: development
-    # Optionally add a volumes mapping for live code updates:
-    volumes:
-        - ./backend:/app
-
-  frontend:
-    build: ./frontend
-    network_mode: host
-    ports:
-      - "5173:5173"  # Maps host port 5173 to container port 5173
-    depends_on:
-      - backend
-    volumes:
-      - ./frontend:/app
-    command: ["npm", "run", "dev"]
-
   database:
     image: mysql:8
     network_mode: host
@@ -38,6 +12,47 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    network_mode: host
+    ports:
+      - "3000:3000"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      USE_HOST_NETWORK: true
+      NODE_ENV: development
+    # Optionally add a volumes mapping for live code updates:
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build: ./frontend
+    network_mode: host
+    ports:
+      - "5173:5173" # Maps host port 5173 to container port 5173
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+    command: ["npm", "run", "dev"]
 
 volumes:
   db_data:

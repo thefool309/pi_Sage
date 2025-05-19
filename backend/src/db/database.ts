@@ -15,10 +15,22 @@ export const sequelize = new Sequelize(MYSQL_URI, {
   logging: true,
 });
 
+async function waitForDb(retries = 10) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      await sequelize.authenticate();
+      return;
+    } catch {
+      await new Promise((r) => setTimeout(r, 2000));
+    }
+  }
+  throw new Error("DB never came up");
+}
+
 export const connectDB = async () => {
   try {
     //Test the connection
-    await sequelize.authenticate();
+    await waitForDb();
     await sequelize.sync({ alter: true }); // this should synchronize all models to database
     console.log("Connection to MYSQL database succeeded");
   } catch (error) {
