@@ -5,16 +5,22 @@ import { parseStringPromise } from "xml2js";
 import { Host } from "../../db/models/Host";
 import { Port } from "../../db/models/Port";
 
+async function parseJson(filePath: string): Promise<any> {
+  const file = await fs.readFile(filePath, "utf-8");
+  var jsonData: any = null;
+  jsonData = await parseStringPromise(file);
+  console.log(JSON.stringify(jsonData));
+  return jsonData;
+}
+
 export async function parseAndSaveScan(filePath: string): Promise<null | any> {
   try {
-    const file = await fs.readFile(filePath, "utf-8");
-    var jsonData: any = null;
-    jsonData = await parseStringPromise(file);
-    console.log(JSON.stringify(jsonData));
+    let jsonData = await parseJson(filePath);
     /* 
     // TODO: create a Scan entry 
     */
     const runstats = jsonData.nmaprun?.runstats[0];
+    if (!runstats) throw new Error("Missing runstats");
     const runHosts = runstats.hosts[0].$;
     const fin = runstats.finished[0].$;
     const scan = await Scan.create({
@@ -26,7 +32,7 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
       exit_success: fin.exit,
       summary: fin.summary,
     });
-    const hosts = jsonData.nmaprun?.host;
+    const hosts = jsonData.nmaprun?.host ?? [];
 
     /*
     // TODO: For each host in scan create a host entry
@@ -45,7 +51,24 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
       /*
       // TODO: for each port in each host create a port entry
       */
-      const extraPorts = host.ports?.[0].extraports ?? [];
+      const extraPorts = host.ports?.[0]?.extraports ?? [];
+      // TODO: implement logic for extraports loop
+      const extraData = extraPorts[0]?.extrareasons[0]?.$;
+      let expandedExtras = extraData ? expandPortList(extraData.ports) : [];
+      let extraReason = extraData?.reason;
+      let extraProto = extraData?.proto;
+      let extraState = extraPorts[0]?.$.state;
+
+      for (const port of expandedExtras) {
+        const newPort = await Port.create({
+          portNumber: port,
+          host_id: newHost.id,
+          protocol: extraProto,
+          state: extraState,
+          reason: extraReason,
+          reason_ttl: 0,
+        });
+      }
 
       const ports = host.ports?.[0]?.port ?? [];
       for (const port of ports) {

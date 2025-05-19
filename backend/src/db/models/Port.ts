@@ -9,7 +9,7 @@ export interface IPort {
   //state members
   state: string;
   reason: string;
-  reason_ttl: number;
+  reason_ttl?: number;
   //service members
   service_name?: string;
   service_product?: string;
@@ -28,9 +28,9 @@ export class Port extends Model<IPort> implements IPort {
   //state members
   declare state: string;
   declare reason: string;
-  declare reason_ttl: number;
+  declare reason_ttl?: number;
   //service members
-  declare service_name: string;
+  declare service_name?: string;
   declare service_product?: string;
   declare service_version?: string;
   declare service_method?: string;
