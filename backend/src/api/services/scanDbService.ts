@@ -9,8 +9,18 @@ async function parseJson(filePath: string): Promise<any> {
   const file = await fs.readFile(filePath, "utf-8");
   var jsonData: any = null;
   jsonData = await parseStringPromise(file);
-  console.log(JSON.stringify(jsonData));
+  //console.log(JSON.stringify(jsonData));
   return jsonData;
+}
+
+function expandPortList(list: string): number[] {
+  return list.split(",").flatMap((seg) => {
+    if (seg.includes("-")) {
+      const [start, end] = seg.split("-").map(Number);
+      return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    }
+    return [Number(seg)];
+  });
 }
 
 export async function parseAndSaveScan(filePath: string): Promise<null | any> {
@@ -95,14 +105,4 @@ export async function parseAndSaveScan(filePath: string): Promise<null | any> {
     console.error("There was an error parsing and saving the scan", err);
     return null;
   }
-}
-
-function expandPortList(list: string): number[] {
-  return list.split(",").flatMap((seg) => {
-    if (seg.includes("-")) {
-      const [start, end] = seg.split("-").map(Number);
-      return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-    }
-    return [Number(seg)];
-  });
 }
