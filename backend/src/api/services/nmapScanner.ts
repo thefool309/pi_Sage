@@ -1,8 +1,19 @@
 import { spawn } from "child_process";
 import fs from "fs/promises";
 import { parseStringPromise } from "xml2js";
-import { deleteXmlFile } from "./deleteXmlFile";
-import { parseAndSaveScan } from "./scanDbService";
+
+import { parseAndSaveScan } from "./parseAndSaveScan";
+
+import { unlink } from "fs/promises";
+
+export async function deleteXmlFile(filePath: string): Promise<void> {
+  try {
+    await unlink(filePath);
+    console.log(`Deleted ${filePath}`);
+  } catch (err) {
+    console.error(`Failed to delete ${filePath}:`, err);
+  }
+}
 
 export async function runNmap(
   _target: string | undefined,
@@ -39,19 +50,17 @@ export async function runNmap(
     });
 
     nmapProcess.on("error", (error) => {
-      // on an error we send a rejection carrying the error message.
+      // on an error we send a rejection carrying the error message so we can see it on the frontend
       reject(`Error: ${error.message}`);
     });
 
     nmapProcess.on("close", async (code) => {
-      //if nmap exited with an error code reject with that code.
+      //if nmap exited with an error code reject with that code, so we can see it on the backend
       if (code !== 0) {
         return reject(`Nmap process exited with code ${code}`);
       }
       try {
-        /*
-        // TODO: pass filePath to parseAndSaveScan helper function
-        */
+        // pass filePath to parseAndSaveScan helper function to load info into db
         const jsonData = (await parseAndSaveScan(outputPath)) || undefined;
         deleteXmlFile(outputPath);
         resolve(JSON.stringify(jsonData));
