@@ -11,7 +11,7 @@ export async function listScans(req: Request, res: Response): Promise<any> {
   const perPage = Number(req.query.perPage) || 20;
   const scans = await Scan.findAll({
     attributes: ["id", "date", "host_up", "host_down"],
-    order: [["start_time", "DESC"]],
+    order: [["date", "DESC"]],
     limit: perPage,
     offset: (page - 1) * perPage,
     include: [
@@ -50,19 +50,25 @@ export async function getScan(req: Request, res: Response): Promise<any> {
 }
 
 export async function getLatest(req: Request, res: Response): Promise<any> {
-  const latest = await Scan.findOne({
-    attributes: ["id", "date", "host_up", "host_down"],
-    order: [["start_time", "DESC"]],
-    include: {
-      model: Host,
-      as: "hosts",
-      include: [
-        {
-          model: Port,
-          as: "ports",
-        },
-      ],
-    },
-  });
-  return latest ? res.json(latest) : res.status(404).end();
+  console.log("getLatest hit!");
+  try {
+    const latest = await Scan.findOne({
+      attributes: ["id", "date", "host_up", "host_down"],
+      order: [["date", "DESC"]],
+      include: {
+        model: Host,
+        as: "hosts",
+        include: [
+          {
+            model: Port,
+            as: "ports",
+          },
+        ],
+      },
+    });
+    if (!latest) {
+      return res.status(404).json({ error: "No scans found" });
+    }
+    res.json(latest);
+  } catch (err) {}
 }

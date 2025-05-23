@@ -3,9 +3,9 @@ import { Router } from "express";
 import { listScans, getScan, getLatest } from "../controllers/dataControllers";
 
 // router for '/data' route
-const router = Router();
+const dbRouter = Router();
 
-router
+dbRouter
 
   .get("/", listScans)
   // api route to query the database for the most recent scan
@@ -13,4 +13,4 @@ router
   // api route to query database for a specific scans details
   .get("/:id", getScan);
 
-export default router;
+export default dbRouter;
