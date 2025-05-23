@@ -2,11 +2,15 @@ import { Router } from "express";
 
 import { listScans, getScan, getLatest } from "../controllers/dataControllers";
 
-// TODO: implement router for '/data' route
+// router for '/data' route
 const router = Router();
 
-// TODO: Implement api route to query the database for the most recent scan
+router
 
-// TODO: Implement api route to query the database for the most recent scans within a displayCount range. This will be for the "Scan History" screen.
+  .get("/", listScans)
+  // api route to query the database for the most recent scan
+  .get("/latest", getLatest)
+  // api route to query database for a specific scans details
+  .get("/:id", getScan);
 
-// TODO: implement api route to query database for a specific scans details
+export default router;
