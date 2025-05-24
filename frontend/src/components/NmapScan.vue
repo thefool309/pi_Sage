@@ -1,9 +1,11 @@
 <template>
   <div class="container">
     <h1>Nmap Scan Results</h1>
-
-    <pre class="scan-output">{{ scanData }}</pre>
-
+    <div class="scan-output">
+      <ScanResultWindow v-if="scanData" :scan="scanData" />
+      <div v-else-if="errorMsg" class="error">{{ errorMsg }}</div>
+      <div v-else class="loading">Waiting for scan…</div>
+    </div>
     <div class="button-group">
       <div
         class="refresh-div"
@@ -26,12 +28,15 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from "vue";
 import axios from "axios";
-
-const scanData = ref("Waiting for scan...\n");
+import ScanResultWindow from "./ScanResultWindow.vue";
+import type { ScanResult } from "./ScanResultWindow.vue";
+const scanData = ref<ScanResult | null>(null);
+const errorMsg = ref<string | null>(null);
 const isPolling = ref(false);
 let pollingInterval: number | null = null;
 
 const fetchScanData = async () => {
+  errorMsg.value = null;
   try {
     await axios.post(
       `http://${import.meta.env.VITE_APP_LOCAL_NETWORK}:${import.meta.env.VITE_APP_PORT}/scan`
@@ -40,10 +45,10 @@ const fetchScanData = async () => {
       `http://${import.meta.env.VITE_APP_LOCAL_NETWORK}:${import.meta.env.VITE_APP_PORT}/data/latest`
     );
 
-    scanData.value = JSON.stringify(data, null, 2);
+    scanData.value = data;
   } catch (error) {
     console.error("Error running scan: ", error);
-    scanData.value = `Error: ${error.message}`;
+    errorMsg.value = error.message || "Unknown Error";
   }
 };
 
@@ -83,13 +88,15 @@ h1 {
 }
 
 .scan-output {
-  background: #000000;
-  border: 1px solid #ddd;
-  padding: 20px;
+  background: #1e1e1e;
+  color: #00ff00;
+  border: 1px solid #333;
+  padding: 1rem 1rem 1.2rem;
   border-radius: 5px;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.7);
   white-space: pre-wrap;
   font-size: 14px;
-  font-family: monospace;
+  font-family: "Courier New", monospace;
   max-height: 400px;
   overflow-y: auto;
   margin-bottom: 20px;
@@ -120,5 +127,16 @@ h1 {
 .disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.loading,
+.error {
+  font-style: italic;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.error {
+  color: #ff5555;
 }
 </style>
