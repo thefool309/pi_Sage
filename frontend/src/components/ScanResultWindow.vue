@@ -28,7 +28,8 @@ const props = defineProps<{
 
 <template>
   <div class="greetings">
-    <h2 class="pink">Hosts {{ scan.hosts.length }}</h2>
+    <h2>Hosts Scanned {{ scan.hosts.length }}</h2>
+    <h3>Hosts with "up" status</h3>
     <ul>
       <li
         v-for="host in scan.hosts.filter((h) => h.status === 'up')"
@@ -63,7 +64,7 @@ h3 {
 
 .greetings pre,
 .greetings h3 {
-  text-align: center;
+  text-align: left;
 }
 
 @media (min-width: 1024px) {
