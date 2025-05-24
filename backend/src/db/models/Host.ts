@@ -81,11 +81,11 @@ Host.init(
 );
 
 Host.hasMany(Port, {
-  foreignKey: "hostId",
+  foreignKey: "host_id",
   as: "ports",
 });
 
 Port.belongsTo(Host, {
-  foreignKey: "hostId",
+  foreignKey: "host_id",
   as: "host",
 });

@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database";
+import { Host } from "./Host";
 
 export interface IPort {
   id?: number;
@@ -95,7 +96,7 @@ Port.init(
     indexes: [
       {
         unique: true,
-        fields: ["hostId", "portNumber"],
+        fields: ["host_id", "portNumber"],
       },
     ],
   }

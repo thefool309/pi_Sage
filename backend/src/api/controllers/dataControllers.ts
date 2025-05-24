@@ -69,6 +69,10 @@ export async function getLatest(req: Request, res: Response): Promise<any> {
     if (!latest) {
       return res.status(404).json({ error: "No scans found" });
     }
+    //const somePorts = await Port.findAll({ limit: 5 });
+    //console.log(somePorts.map((p) => p.toJSON()));
     res.json(latest);
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 }
