@@ -23,6 +23,8 @@ export interface Host {
 export interface ScanResult {
   id: number;
   date: string;
+  host_up: number;
+  host_down: number;
   hosts: Host[];
 }
 </script>
@@ -35,10 +37,10 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="greetings">
+  <div class="terminal">
     <h2>Scan #{{ scan.id }} @ {{ new Date(scan.date).toLocaleString() }}</h2>
     <h2>Hosts Scanned {{ scan.hosts.length }}</h2>
-    <h3>Hosts with "up" status</h3>
+    <h3>Hosts with "up" status: {{ scan.host_up }}</h3>
     <ul>
       <li
         v-for="host in scan.hosts.filter((h) => h.status === 'up')"
@@ -60,6 +62,7 @@ const props = defineProps<{
         <p v-else>No open ports to display!</p>
       </li>
     </ul>
+    <h3>Number of Hosts with "down" status: {{ scan.host_down }}</h3>
   </div>
 </template>
 
@@ -75,14 +78,14 @@ h3 {
   font-size: 1.2rem;
 }
 
-.greetings h1,
-.greetings h3 {
+.terminal h1,
+.terminal h3 {
   text-align: left;
 }
 
 @media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
+  .terminal h1,
+  .terminal h3 {
     text-align: left;
   }
 }
