@@ -17,7 +17,7 @@ const outputPath = "./src/api/services/.nmap-output/output.xml";
 let args: string[] = ["-T4", "-v", "-sV", "-F", "-oX", outputPath];
 const localnetwork = process.env.LOCAL_NETWORK;
 const nMapRouter = Router();
-nMapRouter.get("/", async (req: Request, res: Response) => {
+nMapRouter.post("/", async (req: Request, res: Response) => {
   //here we create a router for all nmap requests in case we want
   try {
     // to create subroutes for different scan options

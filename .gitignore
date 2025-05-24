@@ -66,3 +66,5 @@ coverage
 *.code-workspace
 settings.json
 *.tsbuildinfo
+# Project excludes
+example.json

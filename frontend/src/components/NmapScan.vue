@@ -5,10 +5,18 @@
     <pre class="scan-output">{{ scanData }}</pre>
 
     <div class="button-group">
-      <div class="refresh-div" @click="startPolling" :class="{ disabled: isPolling }">
+      <div
+        class="refresh-div"
+        @click="startPolling"
+        :class="{ disabled: isPolling }"
+      >
         {{ isPolling ? "Polling..." : "Start Scan Polling" }}
       </div>
-      <div class="stop-div" @click="stopPolling" :class="{ disabled: !isPolling }">
+      <div
+        class="stop-div"
+        @click="stopPolling"
+        :class="{ disabled: !isPolling }"
+      >
         Stop Polling
       </div>
     </div>
@@ -16,22 +24,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue';
-import axios from 'axios';
+import { ref, onUnmounted } from "vue";
+import axios from "axios";
 
-const scanData = ref('Waiting for scan...\n');
+const scanData = ref("Waiting for scan...\n");
 const isPolling = ref(false);
 let pollingInterval: number | null = null;
 
 const fetchScanData = async () => {
   try {
-    const response = await axios.get(
+    await axios.post(
       `http://${import.meta.env.VITE_APP_LOCAL_NETWORK}:${import.meta.env.VITE_APP_PORT}/scan`
     );
-    scanData.value = response.data;
+    const { data } = await axios.get(
+      `http://${import.meta.env.VITE_APP_LOCAL_NETWORK}:${import.meta.env.VITE_APP_PORT}/data/latest`
+    );
+
+    scanData.value = JSON.stringify(data, null, 2);
   } catch (error) {
-    console.error("Error fetching scan: ", error);
-    scanData.value = "Error fetching scan data. Check logs.";
+    console.error("Error running scan: ", error);
+    scanData.value = `Error: ${error.message}`;
   }
 };
 
@@ -61,7 +73,7 @@ onUnmounted(() => {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
 h1 {
