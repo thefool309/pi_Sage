@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import axios from "axios";
-
+import ScanDetailModal from "../components/ScanDetailModal.vue";
 import type { ScanResult } from "@/components/ScanResultWindow.vue";
 
 import ScanCard from "@/components/ScanCard.vue";
@@ -31,6 +31,11 @@ onMounted(async () => {
 });
 </script>
 <template>
+  <ScanDetailModal
+    v-if="isModalOpen && selectedScan"
+    :scan="selectedScan"
+    @close="closeModal"
+  />
   <div v-if="scans?.length" class="card-list">
     <h1>Scan History</h1>
     <ScanCard
