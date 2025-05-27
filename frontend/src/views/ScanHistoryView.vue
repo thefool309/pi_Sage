@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import ScanDetailModal from "../components/ScanDetailModal.vue";
+import ScanDetailModal from "@/components/ScanDetailModal.vue";
 import type { ScanResult } from "@/components/ScanResultWindow.vue";
 
 import ScanCard from "@/components/ScanCard.vue";
