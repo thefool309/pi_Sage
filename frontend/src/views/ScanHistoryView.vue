@@ -1,21 +1,26 @@
-<script lang="ts"></script>
 <script setup lang="ts">
-const scans = ref();
+import { ref, onMounted } from "vue";
+import axios from "axios";
 
-onMounted(() => {
+const scans = ref<ScanResult[]>([]);
+
+onMounted(async () => {
   try {
-    scans.value = await axios.get(
+    const response = await axios.get(
       `http://${import.meta.env.VITE_APP_LOCAL_NETWORK}:${import.meta.env.VITE_APP_PORT}/data`
     );
+    scans.value = response.data;
   } catch (err) {
     console.error("Failed to fetch scan history!", err.message);
   }
 });
 </script>
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div v-if="scans?.length" class="card-list">
+    <h1>Scan History</h1>
+    <ScanCard v-for="scan in scans" :key="scan.id" :scan="scan" />
   </div>
+  <p v-else>Couldn't load scan history</p>
 </template>
 
 <style>
@@ -25,5 +30,11 @@ onMounted(() => {
     display: flex;
     align-items: center;
   }
+}
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
 }
 </style>
