@@ -50,7 +50,7 @@ const props = defineProps<{
         <p>Status: {{ host.status }}</p>
         <p v-if="host.mac_addr">MAC Address: {{ host.mac_addr }}</p>
         <p v-if="host.vendor">Vendor: {{ host.vendor }}</p>
-        <p v-if="reason">Reason: {{ host.reason }}</p>
+        <p v-if="host.reason">Reason: {{ host.reason }}</p>
         <ul v-if="host.ports.filter((p) => p.state === 'open').length > 0">
           <li
             v-for="port in host.ports.filter((p) => p.state === 'open')"

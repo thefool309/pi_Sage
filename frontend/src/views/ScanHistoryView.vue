@@ -2,6 +2,10 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
+import type { ScanResult } from "@/components/ScanResultWindow.vue";
+
+import ScanCard from "@/components/ScanCard.vue";
+
 const scans = ref<ScanResult[]>([]);
 
 onMounted(async () => {
@@ -11,14 +15,14 @@ onMounted(async () => {
     );
     scans.value = response.data;
   } catch (err) {
-    console.error("Failed to fetch scan history!", err.message);
+    console.error("Failed to fetch scan history!", err);
   }
 });
 </script>
 <template>
   <div v-if="scans?.length" class="card-list">
     <h1>Scan History</h1>
-    <ScanCard v-for="scan in scans" :key="scan.id" :scan="scan" />
+    <ScanCard v-for="scan in scans.slice(-10)" :key="scan.id" :scan="scan" />
   </div>
   <p v-else>Couldn't load scan history</p>
 </template>
@@ -30,6 +34,10 @@ onMounted(async () => {
     display: flex;
     align-items: center;
   }
+}
+h1 {
+  grid-column: 1 / -1;
+  text-align: center;
 }
 .card-list {
   display: grid;

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ScanResult } from "./ScanResultWindow";
+import type { ScanResult } from "./ScanResultWindow.vue";
 const { scan } = defineProps<{ scan: ScanResult }>();
-onMounted(() => {});
 </script>
 
 <template>
