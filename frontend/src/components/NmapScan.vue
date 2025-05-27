@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted } from "vue";
+import { ref, onUnmounted, onMounted } from "vue";
 import axios from "axios";
 import ScanResultWindow from "./ScanResultWindow.vue";
 import type { ScanResult } from "./ScanResultWindow.vue";
@@ -48,7 +48,11 @@ const fetchScanData = async () => {
     scanData.value = data;
   } catch (error) {
     console.error("Error running scan: ", error);
-    errorMsg.value = error.message || "Unknown Error";
+    if (error instanceof Error) {
+      errorMsg.value = error.message;
+    } else {
+      errorMsg.value = String(error);
+    }
   }
 };
 
@@ -68,6 +72,8 @@ const stopPolling = () => {
   }
 };
 
+onMounted(() => {});
+
 onUnmounted(() => {
   stopPolling();
 });
@@ -83,7 +89,7 @@ onUnmounted(() => {
 
 h1 {
   text-align: center;
-  color: --color-text;
+  color: var(--color-text);
   margin-bottom: 20px;
 }
 

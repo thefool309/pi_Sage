@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import type { ScanResult } from "./ScanResultWindow.vue";
 const { scan } = defineProps<{ scan: ScanResult }>();
+const emit = defineEmits<{
+  (e: "select", scan: ScanResult): void;
+}>();
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" @click="() => emit('select', scan)">
     <h2 class="scan-id">Scan # {{ scan.id }}</h2>
     <div class="scan-stats">
       <p class="stat up">Hosts Up: {{ scan.host_up }}</p>

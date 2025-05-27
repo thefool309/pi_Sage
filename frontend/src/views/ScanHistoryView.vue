@@ -7,7 +7,18 @@ import type { ScanResult } from "@/components/ScanResultWindow.vue";
 import ScanCard from "@/components/ScanCard.vue";
 
 const scans = ref<ScanResult[]>([]);
-
+const selectedScan = ref<ScanResult | null>(null);
+const isModalOpen = ref(false);
+function openModal(scan: ScanResult) {
+  console.log("Open Modal function hit");
+  //console.log(JSON.stringify(scan));
+  selectedScan.value = scan;
+  isModalOpen.value = true;
+}
+function closeModal() {
+  isModalOpen.value = false;
+  selectedScan.value = null;
+}
 onMounted(async () => {
   try {
     const response = await axios.get(
@@ -22,7 +33,12 @@ onMounted(async () => {
 <template>
   <div v-if="scans?.length" class="card-list">
     <h1>Scan History</h1>
-    <ScanCard v-for="scan in scans.slice(-10)" :key="scan.id" :scan="scan" />
+    <ScanCard
+      v-for="scan in scans.slice(0, 10)"
+      :key="scan.id"
+      :scan="scan"
+      @select="openModal"
+    />
   </div>
   <p v-else>Couldn't load scan history</p>
 </template>
