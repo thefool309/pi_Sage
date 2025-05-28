@@ -8,7 +8,7 @@ import HelloWorld from "./components/HelloWorld.vue";
     <img
       alt="Vue logo"
       class="logo"
-      src="@/assets/logo.svg"
+      src="@/assets/penguin.png"
       width="125"
       height="125"
     />
@@ -36,6 +36,9 @@ header {
 .logo {
   display: block;
   margin: 0 auto 2rem;
+  width: 50%;
+  height: auto;
+  max-width: 200px;
 }
 
 nav {
