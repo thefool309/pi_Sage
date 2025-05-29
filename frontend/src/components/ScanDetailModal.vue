@@ -64,8 +64,10 @@ function exportCsv() {
   background: #1e1e1e;
   padding: 1.5rem;
   border-radius: 8px;
-  max-width: 90vw;
+  width: 90vw;
+  max-width: 600px;
   max-height: 90vh;
+  max-height: 800px;
   overflow: auto;
   position: relative;
 }
@@ -73,10 +75,29 @@ function exportCsv() {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  color: #fff;
   border: none;
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
   cursor: pointer;
+}
+.modal-close:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
+}
+.modal-close:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
 .export-controls {
   margin-top: 1rem;
