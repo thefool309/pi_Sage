@@ -50,7 +50,10 @@ nMapRouter.post("/", async (req: Request, res: Response) => {
 
     res.send(result);
   } catch (error) {
-    console.error("Backend" + chalk.red(" failed ") + "to resolve runNmap");
+    console.error(
+      "Backend" + chalk.red(" failed ") + "to resolve runNmap Error: ",
+      error
+    );
     res.status(500).send(error);
   }
   // TODO: Add scan route for scan without '-F'
