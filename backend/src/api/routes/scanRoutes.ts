@@ -52,13 +52,15 @@ nMapRouter.post("/", async (req: Request, res: Response) => {
   } catch (error) {
     console.error(
       "Backend" + chalk.red(" failed ") + "to resolve runNmap Error: ",
-      error
-    );
+      error // added in error printing in the console
+    ); // because even after reading the source and seeing
+    // that it's sending the error as a response
+    // some don't think to check the browser's console
     res.status(500).send(error);
   }
   // TODO: Add scan route for scan without '-F'
 
-  /* TODO: Add scan route for scans with varying '-T{x}'
+  /* TODO: Add scan route for scans with varying Timing Templates('-T{x}')
     where x = the timing template level you're shooting for
    -T0 = quietest and slowest, -T5 =  fastest and loudest */
 });
