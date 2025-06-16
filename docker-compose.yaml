@@ -29,6 +29,7 @@ services:
       retries: 10
 
   backend:
+    image: paranoidpenguin/pi_sage_backend:latest
     build: ./backend
     network_mode: host
     ports:
@@ -44,6 +45,7 @@ services:
       - ./backend:/app
 
   frontend:
+    image: paranoidpenguin/pi_sage_frontend:latest
     build: ./frontend
     network_mode: host
     ports:

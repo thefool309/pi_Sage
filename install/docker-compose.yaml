@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  database:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme
+      MYSQL_DATABASE: pisage
+      MYSQL_USER: pisage_user
+      MYSQL_PASSWORD: securepass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pchangeme"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: paranoidpenguin/pi_sage_backend:latest
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: database
+      DB_USER: pisage_user
+      DB_PASSWORD: securepass
+      DB_NAME: pisage
+
+  frontend:
+    image: paranoidpenguin/pi_sage_frontend:latest
+    ports:
+      - "8080:80"
+
+volumes:
+  db_data:
