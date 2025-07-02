@@ -1,6 +1,6 @@
 # pi_Sage
 
-Welcome to pi_Sage. pi_Sage is currently in a state of active development, and will be until at least the end of May 2025. This is a project I am doing for school, so no contributions will be accepted until I recieve my final grade. 
+Welcome to pi_Sage. pi_Sage is currently in a state of active development, and will be until at least the end of May 2025. This is a project I am doing for school, so no contributions will be accepted until I recieve my final grade. Currently this is built for x86_64 architecture, I am working on a aarch64 version for the raspi 5.
 
 please refer to the [wiki](https://github.com/thefool309/pi_Sage/wiki) for further documentation
 
